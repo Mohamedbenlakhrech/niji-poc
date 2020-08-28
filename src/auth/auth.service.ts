@@ -1,13 +1,14 @@
 import { Injectable, ConflictException, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from 'src/users/schemas/user.schema';
+import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
 import { CreateUserDTO } from 'src/users/dto/create-user.dto';
 import { AuthCredentialsDto } from './dto/authCrednetialsDto.dto';
+import { User } from 'src/users/schemas/user.schema';
 
 @Injectable()
 export class AuthService {
-    
+
     constructor(@InjectModel(User.name) private userModel: Model <User>) {}
 
     async signup(authCredentialsDto: AuthCredentialsDto): Promise<User> {
@@ -19,13 +20,19 @@ export class AuthService {
         }
 
         const user = new this.userModel(authCredentialsDto);
-        user.username = username;
-        user.password = password;   
+        user.username = username; 
+        user.salt = await bcrypt.genSalt();
+        user.password = await this.hashPassword(password, user.salt); 
+
         try {
             await user.save();
             return user;
         } catch(error) {
             throw new InternalServerErrorException();
         }
+    }
+
+    private async hashPassword(password: string, salt: string): Promise<string> {
+        return bcrypt.hash(password, salt);
     }
 }
