@@ -17,15 +17,15 @@ export class AuthService {
         ) {}
 
     async signup(authCredentialsDto: AuthCredentialsDto): Promise<User> {
-        const { username, password } = authCredentialsDto;
+        const { userName, password } = authCredentialsDto;
 
-        const exits = await this.userModel.findOne({ username });
+        const exits = await this.userModel.findOne({ userName });
         if(exits) {
             throw new ConflictException('Username already exists');
         }
 
         const user = new this.userModel(authCredentialsDto);
-        user.username = username; 
+        user.userName = userName; 
         user.salt = await bcrypt.genSalt();
         user.password = await this.hashPassword(password, user.salt); 
 
@@ -38,12 +38,12 @@ export class AuthService {
     }
 
     async signin(authCredentialsDto: AuthCredentialsDto): Promise<{ accessToken: string }> {
-        const username = await this.validatePassword(authCredentialsDto);
-        if (!username) {
+        const userName = await this.validatePassword(authCredentialsDto);
+        if (!userName) {
             throw new UnauthorizedException("Invalid credentials");
         }
         // Else generate the token
-        const payload: JwtPayload = { username };
+        const payload: JwtPayload = { userName };
         const accessToken = await this.jwtService.sign(payload);
 
         return { accessToken };
@@ -56,14 +56,14 @@ export class AuthService {
 
     // validate password for signin
     private async validatePassword(authCredentialsDto: AuthCredentialsDto): Promise<string> {
-        const { username, password } = authCredentialsDto;
-        const user = await this.userModel.findOne({ username });
+        const { userName, password } = authCredentialsDto;
+        const user = await this.userModel.findOne({ userName });
 
         if(user) {
             // compare password
             const validPassword = await bcrypt.compare(password, user.password);
             if(validPassword) {
-                return username
+                return userName
             } else {
                 throw new UnauthorizedException('Invalid credentials');
             }            

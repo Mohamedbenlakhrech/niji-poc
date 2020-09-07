@@ -5,13 +5,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from 'src/users/schemas/user.schema';
 import { Ad, AdSchema } from 'src/ads/schemas/ads.schema';
 import { AdImage, AdImageSchema } from './schemas/adsImages.schema';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [MongooseModule.forFeature(
     [
       { name: Ad.name, schema: AdSchema },
       { name: AdImage.name, schema: AdImageSchema }
-    ])],
+    ]), AuthModule],
   controllers: [AdsController],
   providers: [AdsService]
 })

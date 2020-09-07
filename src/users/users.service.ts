@@ -9,7 +9,7 @@ export class UsersService {
     constructor(@InjectModel(User.name) private userModel: Model <User>) {}
 
     async findAll(): Promise<User[]> {
-        const users = await this.userModel.find().exec();
+        const users = await this.userModel.find().populate({ path: 'ads', select: 'title' }).exec();
         return users;
     }
 
