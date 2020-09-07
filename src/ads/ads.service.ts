@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Ad } from './schemas/ads.schema';
 import { Model } from 'mongoose';
 import { CreateAdsDTO } from './dto/createAdsDto.dto';
 import { User } from 'src/users/schemas/user.schema';
+import { UpdateAdsDTO } from './dto/updateAdsDto.dto';
 
 @Injectable()
 export class AdsService {
@@ -27,6 +28,15 @@ export class AdsService {
 
         } catch(err) {
             console.log(err);
+        }
+    }
+
+    async updateAds(idAds: string, updateAdsDto: UpdateAdsDTO): Promise<Ad> {
+        try {
+            const findAd = await this.adModel.findOneAndUpdate({ _id: idAds }, updateAdsDto, { new: true });
+            return findAd;
+        } catch(error) {
+            throw new NotFoundException("Ads Not Found!")
         }
     }
 }

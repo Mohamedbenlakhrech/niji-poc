@@ -7,7 +7,7 @@ import { UsersModule } from './users/users.module';
 import { AdsModule } from './ads/ads.module';
 
 @Module({
-  imports: [MongooseModule.forRoot('mongodb://localhost/niji-poc'), AuthModule, UsersModule, AdsModule],
+  imports: [MongooseModule.forRoot('mongodb://localhost/niji-poc', { useFindAndModify: false }), AuthModule, UsersModule, AdsModule],
   controllers: [AppController],
   providers: [AppService],
 })
