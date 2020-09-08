@@ -17,7 +17,6 @@ export class AdsService {
 
     async createAds(createAdsDto: CreateAdsDTO, user: User): Promise<Ad> {
         const { title, price } = createAdsDto;
-        console.log(`User ${user}`);
         try {
             const newAds = new this.adModel(createAdsDto);
             newAds.user = user._id;
@@ -27,7 +26,7 @@ export class AdsService {
             return newAds;
 
         } catch(err) {
-            console.log(err);
+            return err;
         }
     }
 

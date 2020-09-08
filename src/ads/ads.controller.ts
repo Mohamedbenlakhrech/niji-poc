@@ -2,7 +2,6 @@ import { Controller, Get, Post, Body, UseGuards, Put, Param, ValidationPipe, Use
 import { AdsService } from './ads.service';
 import { Ad } from './schemas/ads.schema';
 import { CreateAdsDTO } from './dto/createAdsDto.dto';
-import { CreateUserDTO } from 'src/users/dto/create-user.dto';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from 'src/users/schemas/user.schema';
 import { AuthGuard } from '@nestjs/passport';
