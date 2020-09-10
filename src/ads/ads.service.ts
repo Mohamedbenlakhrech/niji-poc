@@ -11,7 +11,10 @@ export class AdsService {
     constructor(@InjectModel(Ad.name) private adModel: Model <Ad>) {}
 
     async findAll(): Promise<Ad[]> {
-        const ads = await this.adModel.find().populate({ path: 'user', select: 'userName' }).exec();
+        const ads = await this.adModel.find().populate(
+            { path: 'user', select: 'userName' },
+            { path: 'categories', select: 'name'}
+            ).exec();
         return ads;
     }
 

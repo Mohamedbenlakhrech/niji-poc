@@ -8,7 +8,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { UpdateAdsDTO } from './dto/updateAdsDto.dto';
 
 @Controller('ads')
-@UseGuards(AuthGuard())
+//@UseGuards(AuthGuard())
 export class AdsController {
     constructor(private adsService: AdsService ){}
 
