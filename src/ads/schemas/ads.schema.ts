@@ -14,10 +14,10 @@ export class Ad extends Document {
   price: number;
 
   @Prop([{ type: MongooseSchema.Types.ObjectId, ref: 'AdImage' }])
-  images: AdImage;
+  images: AdImage[];
 
   @Prop([{ type: MongooseSchema.Types.ObjectId, ref: 'Category' }])
-  categories: Category[];
+  categories: [Category];
 
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User' })
   user: User;
